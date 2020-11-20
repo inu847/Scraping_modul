@@ -27,9 +27,9 @@ class BooksSpider(Spider):
             yield Request(absolute_url, callback=self.parse_book)
     
         # process next page
-        # next_page_url = response.xpath('//a[text()="next"]/@href').extract_first()
-        # absolute_next_page_url = response.urljoin(next_page_url)
-        # yield Request(absolute_next_page_url)
+        next_page_url = response.xpath('//a[text()="next"]/@href').extract_first()
+        absolute_next_page_url = response.urljoin(next_page_url)
+        yield Request(absolute_next_page_url)
 
     def parse_book(self, response):
         title = response.css('h1::text').extract_first()
@@ -71,17 +71,16 @@ class BooksSpider(Spider):
         
         mydb = mysql.connector.connect(host='localhost',
                                        user='root',
-                                       passwd='',
-                                       db='scrap')
+                                       database='scrap')
 
         cursor = mydb.cursor()
 
-        csv_data = csv.reader(file(csv_file))
+        csv_data = csv.reader(open(csv_file))
 
         row_count = 0
         for row in csv_data:
             if row_count != 0:
-                cursor.execute('INSERT IGNORE INTO books_db(title, rating, upc, product,type) VALUES(%s, %s, %s, %s,)', row)
+                cursor.execute('INSERT IGNORE INTO books_db(title, rating, upc, product_type) VALUES(%s, %s, %s, %s)', row)
             row_count += 1
 
         mydb.commit()
