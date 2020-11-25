@@ -26,4 +26,7 @@ driver.find_element_by_xpath('//button[text()="Log in"]').click()
 sleep(5)
 
 driver.find_element_by_xpath('//*[@class="shopee-popup__close-btn"]').click()
+sleep(3)
+
+driver.get('https://seller.shopee.co.id/webchat/conversations')
 sleep(5)
