@@ -5,3 +5,6 @@ result_file = 'output.csv'
 
 username = 'deviskanugroho@gmail.com'
 password = 'Semogaberkah'
+
+usernames = 'deviskanugroho1@gmail.com'
+passwords = 'Semogaberkah'
