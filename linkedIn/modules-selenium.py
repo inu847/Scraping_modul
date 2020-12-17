@@ -55,3 +55,4 @@ for btn in btn_chat:
 # name = sel.xpath('//*[@class="_2YvuyWzYMq"]/text()').extract()
 # chat = sel.xpath('//*[@class="_2VgQumDqQ2"]/span/text()').extract()
 # date_chat = sel.xpath('//*[@class="_3Ye0QdUU1-"]/text()').extract()
+
