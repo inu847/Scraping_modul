@@ -1,6 +1,8 @@
 # DIISI USERNAME UNTUK LOGIN SHOPEE
-email = ['nabilahsuryof9', 
-         'ayularstore12',]
+email = ['calistaxshop', 
+         'inu_ganteng',]
             
-password = 'Semogaberkah'
+password = ['semogaberkah',
+            'Komputer007',]
+            
 result_file = 'output.csv'
