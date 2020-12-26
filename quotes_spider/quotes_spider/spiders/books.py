@@ -2,7 +2,7 @@
 import os
 import csv
 import glob
-import mysql.connector
+import pymysql
 from scrapy import Spider
 # from selenium import webdriver
 # from scrapy.selector import Selector
@@ -13,7 +13,7 @@ from scrapy.http import Request
 # from scrapy.linkextractors import LinkExtractor
 
 def product_info(response, value):
-    return response.xpath('//th[text()="' + value + '"]/following-sibling::td/text()').extract_first()
+    return response.xpath('//th[text()="' +value+ '"]/following-sibling::td/text()').extract_first()
 
 class BooksSpider(Spider):
     name = 'books'
@@ -54,24 +54,24 @@ class BooksSpider(Spider):
 
         yield {
             'title': title,
-            # 'price': price,
-            # 'image_url': image_url,
+            'price': price,
+            'image_url': image_url,
             'rating': rating,
-            # 'description': description,
+            'description': description,
             'upc': upc,
             'product_type': product_type,
-            # 'price_without_tax': price_without_tax,
-            # 'price_with_tax': price_with_tax,
-            # 'tax': tax,
-            # 'availability': availability,
-            # 'number_of_reviews': number_of_reviews
+            'price_without_tax': price_without_tax,
+            'price_with_tax': price_with_tax,
+            'tax': tax,
+            'availability': availability,
+            'number_of_reviews': number_of_reviews
         }
     def close(self, reason):
         csv_file = max(glob.iglob('*.csv'), key=os.path.getctime)
         
-        mydb = mysql.connector.connect(host='localhost',
-                                       user='root',
-                                       database='scrap')
+        mydb = pymysql.connect(host='127.0.0.1',
+                               user='root',
+                               database='webchat')
 
         cursor = mydb.cursor()
 

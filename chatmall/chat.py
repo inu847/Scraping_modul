@@ -3,10 +3,14 @@ from parsel import Selector
 from selenium.webdriver.support.ui import WebDriverWait
 import parameters
 import csv
+import glob
+import os
+import pymysql
 
 def webchat(username, password):
-    # writer = csv.writer(open(parameters.result_file, 'w'))
-    # writer.writerow(['chat_from', 'chat_me', 'chat_buyer', 'product_name', 'product_price'])
+    writer = csv.writer(open(parameters.result_file, 'w'))
+    writer.writerow(['chat_from', 'chat_me', 'chat_buyer'])
+
     driver = webdriver.Chrome()
     driver.maximize_window()
     driver.implicitly_wait(20)
@@ -66,11 +70,11 @@ def webchat(username, password):
         sel = Selector(text=driver.page_source)
         chat_from = sel.xpath('//*[@class="_34iAGBNPqd"]/text()').extract_first()
         chat_me = sel.xpath('//pre[@class="_2Zb8khbVxMFlHDDD2kMhKl _3oQWa8rdLlo8Vgb5aY_iJC"]/text()').extract()
-        chat_buyer = sel.xpath('//pre[@class="_2Zb8khbVxMFlHDDD2kMhKl"]/text()/following-sibling::*[@class="_3fF9tZdS-P  "]/text()').extract()
+        chat_buyer = sel.xpath('//pre[@class="_2Zb8khbVxMFlHDDD2kMhKl"]/text()').extract()
         product_name = sel.xpath('//*[@class="_2d5PdwXD15 _1I-Gx-uQ_G"]/text()').extract_first()
         product_price = sel.xpath('//*[@class="_2tIduzSqLM _2rEqItiXyt"]/text()').extract_first()
         url_image = sel.xpath('//a[@class="_1gEytIy7qKccGA5xfdWQVH"]/@href').extract_first()
-        mssg_timestamp = sel.xpath('//div/[@class="_3fF9tZdS-P  "]/text()').extract_first()
+        # mssg_timestamp = sel.xpath('//div/[@class="_3fF9tZdS-P  "]/text()').extract_first()
 
         print('/n')
         print(chat_from)
@@ -81,14 +85,33 @@ def webchat(username, password):
         print(url_image)
         print('/n')
 
-        # writer.writerow([chat_from, chat_me, chat_buyer, product_name, product_price])
+        writer.writerow([chat_from, chat_me, chat_buyer])
 
+        csv_file = max(glob.iglob('output.csv'), key=os.path.getctime)
+
+        mydb = pymysql.connect(database="webchat", user="root", host="127.0.0.1")
+
+        cursor = mydb.cursor()
+        csv_data = csv.reader(open(csv_file))
+        
+        # row_count = []
+        for row in csv_data:
+            # if row_count == []:
+            data_table = ("""INSERT INTO chat1(chat_from, chat_me, chat_buyer) VALUES(%s, %s, %s)""" %(chat_from, chat_me, chat_buyer), row)
+            # data_table = ("""INSERT INTO chat1(chat_from, chat_me, chat_buyer) VALUES(%s, %s, %s)""" %(str(row["chat_from"]), str(row["chat_me"]), str(row["chat_buyer"])))
+            print(data_table)
+            cursor.execute(data_table)
+            # row_count += 'null'
+        mydb.commit()
+        cursor.close()
+        print('Done!')
+        
     driver.quit()
+
 
 def main():
     for username, password in zip (parameters.email, parameters.password):
-            webchat(username, password)
-
+        webchat(username, password)
 
 if __name__ == '__main__':
     main()
