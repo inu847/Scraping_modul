@@ -1,8 +1,6 @@
 from selenium import webdriver
 from parsel import Selector
 from selenium.webdriver.support.ui import WebDriverWait
-import parameters
-import csv
 
 def delProduct(username, password):
     driver = webdriver.Chrome()
@@ -10,7 +8,7 @@ def delProduct(username, password):
     driver.implicitly_wait(20)
     # driver.minimize_window()
     driver.get('https://seller.shopee.co.id/portal/product/list/all')
-    driver.implicitly_wait(20)
+    driver.implicitly_wait(30)
 
     user = driver.find_element_by_xpath('//*[@autocomplete="username"]')
     user.send_keys(username)
@@ -61,11 +59,12 @@ def delProduct(username, password):
     product_delete = sel.xpath('//*[@class="src-containers-modals---name--29JT9"]/text()').extract_first().strip()
     # account = sel.xpath('//*[@class="account-name"]/text()').extract_first()
 
-    print(product_delete)
+    # print(product_delete)
 
-    writer = open('username.txt', 'r+', encoding = "utf-8")
-    writer.writelines(product_delete) 
-
+    writers = open('Product Delete.txt', 'a+', encoding = "utf-8")
+    writers.writelines(f"'\n'{username}|{password}|{product_delete}")
+    writers.close()
+        
     driver.quit()
 
 
