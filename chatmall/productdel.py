@@ -1,6 +1,7 @@
 from selenium import webdriver
 from parsel import Selector
 from selenium.webdriver.support.ui import WebDriverWait
+import time
 
 def delProduct(username, password):
     driver = webdriver.Chrome()
@@ -19,7 +20,7 @@ def delProduct(username, password):
     driver.implicitly_wait(20)
     
     driver.find_element_by_xpath('//*[@class="shopee-button shopee-button--primary shopee-button--large shopee-button--block"]').click()
-    driver.implicitly_wait(20)
+    driver.implicitly_wait(30)
 
     driver.find_element_by_xpath('//*[@class="guide-back"]').click()
     driver.implicitly_wait(20)
@@ -57,12 +58,17 @@ def delProduct(username, password):
     
     sel = Selector(text=driver.page_source)
     product_delete = sel.xpath('//*[@class="src-containers-modals---name--29JT9"]/text()').extract_first().strip()
-    # account = sel.xpath('//*[@class="account-name"]/text()').extract_first()
+    localtime = time.asctime(time.localtime(time.time())).split()
+    mounth = localtime[1]
+    date = localtime[2]
+    year = localtime[4]
+    clock = localtime[3]
+    time = (f"{mounth}-{date}-{year} {clock}")
 
     # print(product_delete)
 
     writers = open('Product Delete.txt', 'a+', encoding = "utf-8")
-    writers.writelines(f"'\n'{username}|{password}|{product_delete}")
+    writers.writelines(f"\n{username}|{password}|{product_delete}|{time}")
     writers.close()
         
     driver.quit()

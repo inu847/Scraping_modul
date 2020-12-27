@@ -1,19 +1,8 @@
-# writer = open('username.txt', 'r+', encoding = "utf-8")
-# writers = writer.readlines()
-# ok = writers.split("|")
-# print(ok)
-# data = writer.writelines('', '', 'TAMBAH DATA KE 3')
-# for write in writer:
-    
-#     print(write)
+import time
 
-
-
-# DIISI USERNAME UNTUK LOGIN SHOPEE
-# email = ['kasiranshstore',
-#          'inu_ganteng']
-            
-# password = ['semogaberkah',
-#             'Komputer007']
-            
-result_file = 'output.csv'
+localtime = time.asctime(time.localtime(time.time())).split()
+mounth = localtime[1]
+date = localtime[2]
+year = localtime[4]
+clock = localtime[3]
+print(f"{mounth}-{date}-{year} {clock}")
