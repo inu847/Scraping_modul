@@ -45,7 +45,7 @@ def delProduct(username, password):
     count_view = sel.xpath('//*[@class="product-meta-item"]/span[text()="0"]/text()').extract_first()
     row = len(views)
     if row != 0:
-        print('Siap dihapus dari '+ row +'product')
+        print('Siap dihapus dari '+ str(row) +'product')
     else:
         print('tidak ada product yang dihapus')
         driver.quit()
@@ -73,7 +73,7 @@ def delProduct(username, password):
     print('Delete Product '+ product_delete +' with view '+ str(count_view) +' success')
 
     writers = open('Product Delete.txt', 'a+', encoding = "utf-8")
-    writers.writelines(f"\n{username}|{password}|{product_delete}|{mounth}-{date}-{year} {clock}")
+    writers.writelines(f"{username}|{password}|{product_delete}|{mounth}-{date}-{year} {clock}\n")
     writers.close()
         
     driver.quit()
