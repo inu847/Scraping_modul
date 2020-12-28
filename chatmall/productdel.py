@@ -1,10 +1,16 @@
 from selenium import webdriver
 from parsel import Selector
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.chrome.options import Options
 import time
 
 def delProduct(username, password):
-    driver = webdriver.Chrome()
+    WINDOW_SIZE = "1920,1080"
+    chrome_options = Options()
+    chrome_options.add_argument("--headless")  
+    chrome_options.add_argument("--window-size=%s" % WINDOW_SIZE)
+
+    driver = webdriver.Chrome(chrome_options=chrome_options)
     driver.maximize_window()
     driver.implicitly_wait(20)
     # driver.minimize_window()
@@ -21,40 +27,40 @@ def delProduct(username, password):
     
     driver.find_element_by_xpath('//*[@class="shopee-button shopee-button--primary shopee-button--large shopee-button--block"]').click()
     driver.implicitly_wait(30)
-
-    driver.find_element_by_xpath('//*[@class="guide-back"]').click()
-    driver.implicitly_wait(20)
-
-    logon = driver.find_element_by_xpath('//*[@class="account-name"]')
-    if logon:
+    try:
+        driver.find_element_by_xpath('//*[@class="guide-back"]').click()
+        driver.implicitly_wait(10)
         print(username + ' Logged In !!')
-    else:
-        print('Gagal Login cek username password')
+    except:
+        sel = Selector(text=driver.page_source)
+        error_message = sel.xpath('//*[@class="shopee-alert-title"]/text()').extract_first().strip()
+        print(error_message)
         driver.quit()
         main()
-
-
-    try:
-        driver.find_elements_by_xpath('//*[@class="product-meta-item"]/span[text()="0"]')
-        driver.implicitly_wait(5)
-    except:
-        pass
-
+        
+    driver.find_elements_by_xpath('//*[@class="product-meta-item"]/span[text()="0"]')
+    driver.implicitly_wait(5)
+    sel = Selector(text=driver.page_source)
     views = driver.find_elements_by_xpath('//*[@class="product-meta-item"]/span[text()="0"]')
-    driver.implicitly_wait(20)
+    count_view = sel.xpath('//*[@class="product-meta-item"]/span[text()="0"]/text()').extract_first()
+    row = len(views)
+    if row != 0:
+        print('Siap dihapus dari '+ row +'product')
+    else:
+        print('tidak ada product yang dihapus')
+        driver.quit()
+        
 
     view = views[0]
     view.find_element_by_xpath('//*[@class="shopee-checkbox__indicator"]').click()
     driver.implicitly_wait(20)
-        
     driver.find_element_by_xpath('//*[@class="delete-button shopee-button shopee-button--normal"]').click()
     driver.implicitly_wait(20)
-
-    driver.find_element_by_xpath('//*[@class="src-containers-modals---name--29JT9"]')
+    
+    driver.find_elements_by_xpath('//*[@class="shopee-modal__footer-buttons"]/button')[1]
     driver.implicitly_wait(20)
-
-    # driver.find_elements_by_xpath('//*[@class="shopee-button shopee-button--primary shopee-button--normal"]')[6].click()
-    # driver.implicitly_wait(20)
+   
+    product_delete = driver.find_element_by_xpath('//*[@class="src-containers-modals---name--29JT9"]')
     
     sel = Selector(text=driver.page_source)
     product_delete = sel.xpath('//*[@class="src-containers-modals---name--29JT9"]/text()').extract_first().strip()
@@ -63,12 +69,11 @@ def delProduct(username, password):
     date = localtime[2]
     year = localtime[4]
     clock = localtime[3]
-    time = (f"{mounth}-{date}-{year} {clock}")
-
-    # print(product_delete)
+    
+    print('Delete Product '+ product_delete +' with view '+ str(count_view) +' success')
 
     writers = open('Product Delete.txt', 'a+', encoding = "utf-8")
-    writers.writelines(f"\n{username}|{password}|{product_delete}|{time}")
+    writers.writelines(f"\n{username}|{password}|{product_delete}|{mounth}-{date}-{year} {clock}")
     writers.close()
         
     driver.quit()
