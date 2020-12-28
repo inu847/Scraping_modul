@@ -63,12 +63,11 @@ def delProduct(username, password):
     date = localtime[2]
     year = localtime[4]
     clock = localtime[3]
-    time = (f"{mounth}-{date}-{year} {clock}")
 
     # print(product_delete)
 
     writers = open('Product Delete.txt', 'a+', encoding = "utf-8")
-    writers.writelines(f"\n{username}|{password}|{product_delete}|{time}")
+    writers.writelines(f"\n{username}|{password}|{product_delete}|{mounth}-{date}-{year} {clock}")
     writers.close()
         
     driver.quit()
