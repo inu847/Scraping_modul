@@ -8,7 +8,7 @@ import os
 import pymysql
 
 def webchat(username, password):
-    writer = csv.writer(open(parameters.result_file, 'w'))
+    writer = csv.writer(open("output.csv", 'w'))
     writer.writerow(['chat_from', 'chat_me', 'chat_buyer'])
 
     driver = webdriver.Chrome()
@@ -110,7 +110,11 @@ def webchat(username, password):
 
 
 def main():
-    for username, password in zip (parameters.email, parameters.password):
+    username = open(r"username.txt", "r")
+    reads = username.readlines()
+    for read in reads:
+        username = read[0]
+        password = read[1]
         webchat(username, password)
 
 if __name__ == '__main__':
