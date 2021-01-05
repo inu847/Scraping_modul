@@ -2,13 +2,14 @@ from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.chrome.options import Options
 from time import sleep
+from parsel import Selector
 
 driver = webdriver.Chrome()
 driver.get('https://seller.shopee.co.id/portal/product/list/all')
 driver.implicitly_wait(30)
 
 user = driver.find_element_by_xpath('//*[@autocomplete="username"]')
-user.send_keys('karmanuwmarket')
+user.send_keys('oktawasxmarket')
 driver.implicitly_wait(20)
 
 passwd = driver.find_element_by_xpath('//*[@autocomplete="current-password"]')
@@ -27,13 +28,18 @@ btn_more = driver.find_elements_by_xpath('//*[@class="dropdown shopee-dropdown"]
 for btn in btn_more:
     btn.click()
     driver.implicitly_wait(10)
-    try:
-        driver.find_element_by_xpath('//*[@class="boost-button boost-no-padding"]').click()
-        sleep(3)
-    except:
-        pass
-    btn.close()
-    print(btn)
+    sel = Selector(text=driver.page_source)
+    up = sel.xpath('//*[@class="boost-button-text"]/text()').extract_first().strip()
+    if up == 'Naikkan Produk':
+        driver.find_element_by_xpath('//*[@class="boost-button-text"]').click()
+        driver.implicitly_wait(10)
+        btn.click()
+    else:
+        btn.click()
+        continue
+        
+    
+
         
 # view.find_element_by_xpath('//*[@class="shopee-popper"]').click()
 # driver.implicitly_wait(30)
