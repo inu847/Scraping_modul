@@ -24,7 +24,8 @@ def main():
     username = open(r"username.txt", "r")
     reads = username.readlines()
     number = 2
-    while(number <= 50):
+    user_count = len(reads)
+    while(number <= user_count):
         for read in reads:
             akun = read.strip()
             username = akun.split("|")[0]
@@ -32,7 +33,9 @@ def main():
             print("update cell 4,"+ str(number) +" "+str(username))
             print()
             sheet.update_cell(number,4, username)
-            sleep(2)
+            sleep(1)
+            sheet.update_cell(number,5, password)
             number += 1
+    loopback()
 
 loopback()
