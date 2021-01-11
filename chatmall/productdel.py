@@ -79,7 +79,6 @@ def delProduct(username, password):
         
     driver.quit()
 
-
 def main():
     username = open(r"username.txt", "r")
     reads = username.readlines()

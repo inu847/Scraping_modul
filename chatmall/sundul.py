@@ -4,8 +4,11 @@ from selenium.webdriver.chrome.options import Options
 from time import sleep
 from parsel import Selector
 
+chrome_options = Options()
+chrome_options = chrome_options.add_argument("--headless")
 driver = webdriver.Chrome()
-driver.get('https://seller.shopee.co.id/portal/product/list/all')
+driver.maximize_window()
+driver.get('https://seller.shopee.co.id/portal/product/list/all?page=1&order=sales_dsc')
 driver.implicitly_wait(30)
 
 user = driver.find_element_by_xpath('//*[@autocomplete="username"]')
@@ -24,28 +27,42 @@ driver.implicitly_wait(10)
 driver.find_elements_by_xpath('//*[@class="view-modes"]/div')[0].click()
 driver.implicitly_wait(10)
 
-driver.find_elements_by_xpath('//*[@class="shopee-order product-list-item__td product-variation__sales product-list-header-item text-overflow2"]/div/i[2]').click()
-driver.implicitly_wait(5)
+# driver.find_element_by_xpath('//*[@class="EntryLayout_portal__2oe7T"]/button').click()
+# driver.implicitly_wait(10)
 
-driver.find_element_by_xpath('//*[@class="product-list-card product-list-item"]')
+# dsc = driver.find_element_by_xpath('//*[@class="shopee-order-dsc order-icon shopee-icon"]')[2].click()
+# driver.implicitly_wait(10)
+
+driver.find_elements_by_xpath('//*[@class="product-list-card product-list-item"]')
 driver.implicitly_wait(10)
 
 sel = Selector(text=driver.page_source)
-views = sel.xpath('//*[@class="product-list-item__td product-variation__sales"]').extract()
-vie = driver.find_elements_by_xpath('//*[@class="shopee-checkbox__indicator"]')
-
-driver.implicitly_wait(10)
-for (view, vi) in zip (views, vie):
+boost = driver.find_element_by_xpath('//*[@class="shopee-popper dropdown-menu"]')
+views = sel.xpath('//*[@class="product-list-item__td product-variation__sales"]/div/text()').extract()
+for view in views:
+    view.strip()
     print(view)
-    if view == '0':
-        print('Tidak ada view > 0')
+    if view != '0':
+        boost.click()
+        driver.implicitly_wait(10)
+        driver.find_element_by_xpath('//*[@class="shopee-popper dropdown-menu"]/ul/li[5]').click()
+        print("sundul success")
     else:
-        vi.click()
-        sleep(2)
-        sel.xpath('//*[@class="shopee-dropdown-menu"]')
-        driver.find_element_by_xpath('//*[@class="shopee-dropdown-menu"]/li[4]')
-        driver.find_elements_by_xpath('//*[@class="product-actions-button product-mul-actions-button"]')[0].click()
-        driver.find_elements_by_xpath('//*[@class="boost-button"]')
+        continue
+
+
+# driver.implicitly_wait(10)
+# for (view, vi) in zip (views, vie):
+#     print(view)
+#     if view == '0':
+#         print('Tidak ada view > 0')
+#     else:
+#         vi.click()
+#         sleep(2)
+#         sel.xpath('//*[@class="shopee-dropdown-menu"]')
+#         driver.find_element_by_xpath('//*[@class="shopee-dropdown-menu"]/li[4]')
+#         driver.find_elements_by_xpath('//*[@class="product-actions-button product-mul-actions-button"]')[0].click()
+#         driver.find_elements_by_xpath('//*[@class="boost-button"]')
 
 # driver.implicitly_wait(5)
 
