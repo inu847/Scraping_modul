@@ -1,91 +1,64 @@
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.keys import Keys
 from time import sleep
 from parsel import Selector
 
-chrome_options = Options()
-chrome_options = chrome_options.add_argument("--headless")
-driver = webdriver.Chrome()
-driver.maximize_window()
-driver.get('https://seller.shopee.co.id/portal/product/list/all?page=1&order=sales_dsc')
-driver.implicitly_wait(30)
+def productSundul(userName, password, product1, product2):
+    chrome_options = Options()
+    chrome_options = chrome_options.add_argument("--headless")
+    driver = webdriver.Chrome()
+    driver.maximize_window()
+    driver.get('https://seller.shopee.co.id/portal/product/list/all?page=1&order=sales_dsc')
+    driver.implicitly_wait(30)
 
-user = driver.find_element_by_xpath('//*[@autocomplete="username"]')
-user.send_keys('oktawasxmarket')
-driver.implicitly_wait(20)
+    user = driver.find_element_by_xpath('//*[@autocomplete="username"]')
+    user.send_keys(userName)
+    driver.implicitly_wait(20)
 
-passwd = driver.find_element_by_xpath('//*[@autocomplete="current-password"]')
-passwd.send_keys('semogaberkah')
-driver.implicitly_wait(20)
-    
-driver.find_element_by_xpath('//*[@class="shopee-button shopee-button--primary shopee-button--large shopee-button--block"]').click()
+    passwd = driver.find_element_by_xpath('//*[@autocomplete="current-password"]')
+    passwd.send_keys(password)
+    driver.implicitly_wait(20)
 
-driver.find_element_by_xpath('//*[@class="guide-back"]').click()
-driver.implicitly_wait(10)
+    passwd.send_keys(Keys.RETURN)
+    driver.implicitly_wait(10)
 
-driver.find_elements_by_xpath('//*[@class="view-modes"]/div')[0].click()
-driver.implicitly_wait(10)
+    driver.find_element_by_xpath('//*[@class="guide-back"]').click()
+    driver.implicitly_wait(10)
 
-# driver.find_element_by_xpath('//*[@class="EntryLayout_portal__2oe7T"]/button').click()
-# driver.implicitly_wait(10)
+    driver.find_elements_by_xpath('//*[@class="view-modes"]/div')[0].click()
+    driver.implicitly_wait(10)
 
-# dsc = driver.find_element_by_xpath('//*[@class="shopee-order-dsc order-icon shopee-icon"]')[2].click()
-# driver.implicitly_wait(10)
-
-driver.find_elements_by_xpath('//*[@class="product-list-card product-list-item"]')
-driver.implicitly_wait(10)
-
-sel = Selector(text=driver.page_source)
-boost = driver.find_element_by_xpath('//*[@class="shopee-popper dropdown-menu"]')
-views = sel.xpath('//*[@class="product-list-item__td product-variation__sales"]/div/text()').extract()
-for view in views:
-    view.strip()
-    print(view)
-    if view != '0':
-        boost.click()
+    products = [product1, product2]
+    for product in products:
+        searchProduct = driver.find_element_by_xpath('//*[@class="shopee-input-group"]/span[2]//input')
+        searchProduct.send_keys(product)
+        searchProduct.send_keys(Keys.RETURN)
         driver.implicitly_wait(10)
+        # button more
+        driver.find_element_by_xpath('//*[@class="product-action"]/div').click()
+        driver.implicitly_wait(10)
+        # boost product
         driver.find_element_by_xpath('//*[@class="shopee-popper dropdown-menu"]/ul/li[5]').click()
-        print("sundul success")
-    else:
-        continue
 
+def readProduct():
+    username = open(r"username.txt", 'r', encoding='utf-8')
+    readUsers = username.readlines()
+    for readUser in readUsers:
+        user = readUser.strip()
+        userName = user.split('|')[0]
+        password = user.split('|')[1]
+        products = open(r"product.txt", "r", encoding="utf-8")
+        reads = products.readlines()
+        for read in reads:
+            product = read.strip()
+            product1 = product.split("|")[0]
+            product2 = product.split("|")[1]
+            # product3 = product.split("|")[2]
+            # product4 = product.split("|")[3]
+            # product5 = product.split("|")[4]
+            productSundul(userName, password, product1, product2)
 
-# driver.implicitly_wait(10)
-# for (view, vi) in zip (views, vie):
-#     print(view)
-#     if view == '0':
-#         print('Tidak ada view > 0')
-#     else:
-#         vi.click()
-#         sleep(2)
-#         sel.xpath('//*[@class="shopee-dropdown-menu"]')
-#         driver.find_element_by_xpath('//*[@class="shopee-dropdown-menu"]/li[4]')
-#         driver.find_elements_by_xpath('//*[@class="product-actions-button product-mul-actions-button"]')[0].click()
-#         driver.find_elements_by_xpath('//*[@class="boost-button"]')
-
-# driver.implicitly_wait(5)
-
-# btn_more = driver.find_elements_by_xpath('//*[@class="dropdown shopee-dropdown"]')
-# for btn in btn_more:
-#     btn.click()
-#     driver.implicitly_wait(10)
-#     sel = Selector(text=driver.page_source)
-#     up = sel.xpath('//*[@class="boost-button-text"]/text()').extract_first().strip()
-#     if up == 'Naikkan Produk':
-#         driver.find_element_by_xpath('//*[@class="boost-button-text"]').click()
-#         driver.implicitly_wait(10)
-#         btn.click()
-#     else:
-#         btn.click()
-#         continue
-        
-#     sel.xpath('//*[@class="shopee-dropdown-menu"]')
-
-        
-# view.find_element_by_xpath('//*[@class="shopee-popper"]').click()
-# driver.implicitly_wait(30)
-# view.find_element_by_xpath('//*[@class="shopee-dropdown-item"]').click()
-# driver.implicitly_wait(30)
-# view.find_element_by_xpath('//*[@class="boost-button-text"]').click()
-
+if __name__ == '__main__':
+    readProduct()
