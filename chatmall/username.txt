@@ -1,10 +1,2 @@
-elisaubcollect|Semogaberkah
-pandulaq_toko|Semogaberkah
-viktorsr_toko|Semogaberkah
-lasmantb_toko|Semogaberkah
-dodonasl_shop|Semogaberkah
-rendyani_collect|Semogaberkah
-yunitaax_mall|Semogaberkah
-oliviamz_trendy|Semogaberkah
-zaenabsi_shop|Semogaberkah
-zaenabmp_toko|Semogaberkah
+vdianastore|semogaberkah
+rahmaemall|semogaberkah
