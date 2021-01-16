@@ -3,12 +3,14 @@ from parsel import Selector
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.chrome.options import Options
 import time
+from time import sleep
 
 def delProduct(username, password):
     WINDOW_SIZE = "1920,1080"
     chrome_options = Options()
-    chrome_options.add_argument("--headless")  
+    chrome_options.add_argument("--headless")
     chrome_options.add_argument("--window-size=%s" % WINDOW_SIZE)
+    chrome_options.add_argument('--log-level=3')
 
     driver = webdriver.Chrome(chrome_options=chrome_options)
     driver.maximize_window()
@@ -45,10 +47,10 @@ def delProduct(username, password):
     driver.implicitly_wait(5)
     sel = Selector(text=driver.page_source)
     views = driver.find_elements_by_xpath('//*[@class="product-meta-item"]/span[text()="0"]')
-    count_view = sel.xpath('//*[@class="product-meta-item"]/span[text()="0"]/text()').extract_first()
+    # count_view = sel.xpath('//*[@class="product-meta-item"]/span[text()="0"]/text()').extract_first()
     row = len(views)
     if row != 0:
-        print('Siap dihapus dari '+ str(row) +'product')
+        print('Siap dihapus dari '+ str(row) +' product')
     else:
         print('tidak ada product yang dihapus')
         driver.quit()
@@ -59,19 +61,22 @@ def delProduct(username, password):
     driver.implicitly_wait(20)
     driver.find_element_by_xpath('//*[@class="delete-button shopee-button shopee-button--normal"]').click()
     driver.implicitly_wait(20)
-    
-    driver.find_elements_by_xpath('//*[@class="shopee-modal__footer-buttons"]/button')[1]
-    driver.implicitly_wait(20)
-   
+
     product_delete = driver.find_element_by_xpath('//*[@class="src-containers-modals---name--29JT9"]')
-    
+    driver.implicitly_wait(20)
+
     sel = Selector(text=driver.page_source)
     product_delete = sel.xpath('//*[@class="src-containers-modals---name--29JT9"]/text()').extract_first().strip()
+    print("Delete Product : "+ product_delete)
     localtime = time.asctime(time.localtime(time.time())).split()
     mounth = localtime[1]
     date = localtime[2]
     year = localtime[4]
     clock = localtime[3]
+
+    # button konfirm to delete
+    driver.find_elements_by_xpath('//*[@class="shopee-modal__footer-buttons"]/button')[1].click()
+    sleep(2)
 
     writers = open('Product Delete.txt', 'a+', encoding = "utf-8")
     writers.writelines(f"\n{username}|{password}|{product_delete}|{mounth}-{date}-{year} {clock}")
@@ -89,7 +94,6 @@ def main():
         continued = delProduct(username, password)
         if not continued:
             continue
-            print("Return Gagal Login!!")
 
 if __name__ == '__main__':
     main()

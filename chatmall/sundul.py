@@ -50,16 +50,22 @@ def productSundul(userName, password, product1, product2, product3, product4, pr
         else:
             return False
 
-
     products = [product1, product2, product3, product4, product5]
     for product in products:
         searchProduct = driver.find_element_by_xpath('//*[@class="shopee-input-group"]/span[2]//input')
         searchProduct.send_keys(product)
         driver.implicitly_wait(10)
         searchProduct.send_keys(Keys.ENTER)
-        driver.implicitly_wait(10)
         sleep(2)
-        driver.find_element_by_xpath('//*[text()="'+product+'"]')
+        driver.implicitly_wait(10)
+        try:
+            # find product to exsecute
+            driver.find_element_by_xpath('//*[text()="'+product+'"]')
+        except:
+            print("Product tidak ditemukan, Ganti nama product!!!")
+            driver.quit()
+            return False
+            
         localtime = time.asctime(time.localtime(time.time())).split()
         mounth = localtime[1]
         date = localtime[2]
@@ -70,13 +76,20 @@ def productSundul(userName, password, product1, product2, product3, product4, pr
             driver.find_element_by_xpath('//*[@class="product-action"]/div').click()
             driver.implicitly_wait(10)
             # boost product
-            driver.find_element_by_xpath('//*[@class="shopee-popper dropdown-menu"]/ul/li[5]').click()
-            print("product sundul : "+ product)
+            boost = driver.find_element_by_xpath('//*[@class="shopee-popper dropdown-menu"]/ul/li[5]').click()
+            driver.implicitly_wait(10)
+            sel = Selector(text=driver.page_source)
+            driver.find_element_by_xpath('//*[@class="boost-button boost-no-padding"]')
+            bostprod = sel.xpath('//*[@class="boost-button boost-no-padding"]/div/text()').extract_first().strip()
+            if boost:
+                print("product sundul : "+ product)
+            else:
+                print("Sudah disundul with limit : "+ bostprod)
+                writers = open('product sundul.txt', 'a+', encoding="utf-8")
+                writers.writelines(f"{userName}|{product}|{'Failed'}|{mounth}-{date}-{year} {clock}\n")
+                writers.close()
         except:
-            print("Gagal disundul")
-            writers = open('product sundul.txt', 'a+', encoding="utf-8")
-            writers.writelines(f"{userName}|{product}|{'Failed'}|{mounth}-{date}-{year} {clock}\n")
-            writers.close()
+            pass
 
         driver.get('https://seller.shopee.co.id/portal/product/list/all?page=1')
         driver.implicitly_wait(5)

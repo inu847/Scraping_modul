@@ -93,8 +93,7 @@ def delProduct(username, password):
     client = gspread.authorize(creds)
     sheet = client.open("Test").sheet1
     
-    number = 2
-    while (number >= )
+    for number in range(len(reads))
         sheet.update_cell(number,1, username)
         sleep(1)
         sheet.update_cell(number,2, password)
