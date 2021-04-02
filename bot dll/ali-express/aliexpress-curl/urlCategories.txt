@@ -1,0 +1,187 @@
+Dresses|200003482|dresses
+Blouses & Shirts|200001648|blouses-shirts
+Hoodies & Sweatshirts|100003141|hoodies-sweatshirts-woman
+Sweaters|200000783|sweaters-woman
+Jackets & Coats|200000775|jackets-coats-woman
+Bottoms|200118010|bottoms
+Rompers|200215341|rompers
+Tops & Tees|200000785|tops-tees-woman
+Jumpsuits|200001092|jumpsuits
+Bodysuits|200215336|bodysuits
+Suits & Sets|200000782|suits-sets
+Dress|205871601|dress
+Jeans|205874801|jeans-woman
+Skirt|205876401|skirt
+Swimsuit|205895301|swimsuit
+Women Tops|205900902|women-tops
+Pants & Capris|205927403|pants-capris
+Muslim Fashion|206081401|muslim-fashion
+Plus size clothes|206083901|plus-size-clothes
+Hoodies & Sweatshirts|100003084|hoodies-sweatshirts-men
+Tops & Tees|200000707|tops-tees-men
+Jackets & Coats|200000662|jackets-coats-men
+Pants|200118008|pants
+Shirts|200000668|shirts
+Jeans|100003086|jeans-men
+Sweaters|200000701|sweaters-men
+Suits & Blazers|200000692|suits-blazers
+Casual Shorts|100003088|casual-shorts
+Men's Sets|200216733|mens-sets
+Board Shorts|200000709|board-shorts
+Cellphones|5090301|cellphones
+iPhones|205838503|iphones
+Refurbished Phones|205832906|refurbished-phones
+Mobile Phone Accessories|200084017|mobile-phone-accessories
+Mobile Phone Parts|200086021|mobile-phone-parts
+Phone Bags & Cases|200216959|phone-bags-cases
+Communication Equipments|200126001|communication-equipments
+Walkie Talkie|50906|walkie-talkie
+Walkie Talkie Parts & Accessories|205668006|walkie-talkie-parts-accessories
+Stationery Sticker|205953922|stationery-sticker
+Writing & Correction Supplies|200003196|writing-correction-supplies
+Notebooks & Writing Pads|100003745|notebooks-writing-pads
+Tapes, Adhesives & Fasteners|100003836|tapes-adhesives-fasteners
+Desk Accessories & Organizer|211106|desk-accessories-organizer
+Art Supplies|211111|art-supplies
+School & Educational Supplies|100005094|school-educational-supplies
+Books & Magazines|205954820|books-magazines
+Labels, Indexes & Stamps|200003197|labels-indexes-stamps
+Mail & Shipping Supplies|200003238|mail-shipping-supplies
+Office Binding Supplies|100003809|office-binding-supplies
+Filing Products|100003804|filing-products
+Calendars, Planners & Cards|200003198|calendars-planners-cards
+Cutting Supplies|100003819|cutting-supplies
+Presentation Supplies|212002|presentation-supplies
+Paper|2112|paper
+Portable Audio & Video|200002398|portable-audio-video
+Smart Electronics|200010196|smart-electronics
+Home Audio & Video|200002397|home-audio-video
+Accessories & Parts|200002394|accessories-parts
+Camera & Photo|200002395|camera-photo
+Electronic Cigarettes|200005280|electronic-cigarettes
+Earphones & Headphones|200216623|earphones-headphones
+Wearable Devices|200084019|wearable-devices
+Video Games|200002396|video-games
+Sports & Action Video Cameras|200216648|sports-action-video-cameras
+Speakers|200217534|speakers
+Home Electronic Accessories|200216598|home-electronic-accessories
+VR/AR Devices|200215272|vr-ar-devices
+HIFI Devices|200217800|hifi-devices
+Live Equipment|200218521|live-equipment
+Power Source|200218547|power-source
+Fine Jewelry|200188001|fine-jewelry
+Necklaces & Pendants|200000109|necklaces-pendants
+Earrings|200000139|earrings
+Rings|100006749|rings
+Bracelets & Bangles|200000097|bracelets-bangles
+Jewelry Sets & More|200132001|jewelry-sets-more
+Beads & Jewelry Making|200154003|beads-jewelry-making
+Wedding & Engagement Jewelry|200000161|wedding-engagement-jewelry
+Jewelry making|205871206|jewelry-making
+Customized Jewelry|205952104|customized-jewelry
+Dog Clothing & Shoes|200036008|dog-clothing-shoes
+Dog Collars & Leads|200215847|dog-collars-leads
+Dog Feeding|200002889|dog-feeding
+Dog Grooming|200218056|dog-grooming
+Dog Doors, Houses & Furniture|200218061|dog-doors-houses-furniture
+Dog Toys|200002893|dog-toys
+Dog Training Aids|200215853|dog-training-aids
+Dog Carriers|200002886|dog-carriers
+Dog Litter & Housebreaking|200215848|dog-litter-housebreaking
+Cat Supplies|200002071|cat-supplies
+Fish & Aquatic Supplies|200002906|fish-aquatic-supplies
+Reptile & Amphibian Supplies|200002921|reptile-amphibian-supplies
+Small Animal Supplies|200215838|small-animal-supplies
+Bird Supplies|200002064|bird-supplies
+Insect Supplies|200216511|insect-supplies
+Farm Animal Supplies|200002896|farm-animal-supplies
+Pet Thermometers|200217383|pet-thermometers
+Pet Memorials|200217942|pet-memorials
+GPS Trackers|200215873|gps-trackers
+Pet Microchips|200217967|pet-microchips
+Pet Health Care & Hygiene|205658016|pet-health-care-hygiene
+Pet Medical Supplies|205680008|pet-medical-supplies
+Dog Food|205664011|dog-food
+Women's Bags|200010063|women-bags
+Men's Bags|200010057|men-bags
+Backpacks|152401|backpacks
+Wallets|152405|wallets
+Kids & Baby's Bags|200066014|kids-baby-bags
+Luggage & Travel Bags|152404|luggage-travel-bags
+Functional Bags|200068019|functional-bags
+Coin Purses & Holders|3803|coin-purses-holders
+Bag Parts & Accessories|152409|bag-parts-accessories
+Girls' Clothing|100003199|girls-clothing
+Boys' Clothing|100003186|boys-clothing
+Children's Shoes|32212|childrens-shoes
+Girls' Baby Clothing|200000567|girls-baby-clothing
+Boys' Baby Clothing|200000528|boys-baby-clothing
+Baby Shoes|200002101|baby-shoes
+kids&Baby Accessories|205870202|kids-baby-accessories
+Matching Family Outfits|200166001|matching-family-outfits
+Nappy Changing|200002433|nappy-changing
+Baby Care|100001118|baby-care
+Feeding|200003595|feeding
+Baby Bedding|100002964|baby-bedding
+Baby Stroller & Accessories|200217552|baby-stroller-accessories
+Pregnancy & Maternity|200217581|pregnancy-maternity
+Activity & Gear|200003594|activity-gear
+Baby Furniture|200217573|baby-furniture
+Safety Equipment|200003592|safety-equipment
+Toilet Training|200217567|toilet-training
+Baby Souvenirs|200217580|baby-souvenirs
+Car Seats & Accessories|200217523|car-seats-accessories
+Sports Clothing|200001095|sports-clothing
+Sneakers|200005276|sneakers
+Cycling|200003570|cycling
+Fishing|100005444|fishing
+Camping & Hiking|100005433|camping-hiking
+Swimming|200001115|swimming
+Musical Instruments|100005383|musical-instruments
+Hunting|100005471|hunting
+Fitness & Body Building|100005259|fitness-body-building
+Water Sports|100005575|water-sports
+Team Sports|200094001|team-sports
+Racquet Sports|200005059|racquet-sports
+Running|200005156|running
+Shooting|100005479|shooting
+Skiing & Snowboarding|100005599|skiing-snowboarding
+Sports Accessories|200214370|sports-accessories
+Roller Skates, Skateboards & Scooters|200005143|roller-skates-skateboards-scooters
+Entertainment|200005101|entertainment
+Sports Bags|200217620|sports-bags
+Nails Art & Tools|200002547|nails-art-tools
+Makeup|660103|makeup
+Health Care|200002496|health-care
+Skin Care|3306|skin-care
+Hair Care & Styling|200002458|hair-care-styling
+Shaving & Hair Removal|660302|shaving-hair-removal
+Beauty Essentials|200074001|beauty-essentials
+Sex Products|200003045|sex-products
+Tattoo & Body Art|200003551|tattoo-body-art
+Bath & Shower|200002444|bath-shower
+Fragrances & Deodorants|200002454|fragrances-deodorants
+Sanitary Paper|1513|sanitary-paper
+Oral Hygiene|3305|oral-hygiene
+Tools & Accessories|200002569|tools-accessories
+Men's Grooming|201902009|men-grooming
+Skin Care Tools|205778203|skin-care-tools
+Car Lights|200216084|car-lights
+Auto Replacement Parts|200000191|auto-replacement-parts
+Car Electronics|200000369|car-electronics
+Interior Accessories|200004619|interior-accessories
+Car Repair Tools|200216017|car-repair-tools
+Motorcycle Accessories & Parts|200000408|motorcycle-accessories-parts
+Exterior Accessories|200004620|exterior-accessories
+Car Wash & Maintenance|200217078|car-wash-maintenance
+ATV,RV,Boat & Other Vehicle|200214451|atv-rv-boat-other-vehicle
+Travel & Roadway Product|200217080|travel-roadway-product
+Lights & Lighting|39|lights-lighting
+Bathroom Fixtures|100006479|bathroom-fixtures
+Kitchen Fixtures|200215252|kitchen-fixtures
+Hardware|42|hardware
+Electrical Equipments & Supplies|5|electrical-equipments-supplies
+Building Supplies|200003230|building-supplies
+Painting Supplies & Wall Treatments|200217241|painting-supplies-wall-treatments
+Plumbing|200217293|plumbing
+Family Intelligence System|200217718|family-intelligence-system
