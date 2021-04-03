@@ -10,58 +10,62 @@ import json
 import subprocess
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
+import os
 
 def scrap(keywoard):
     proxies = {
         'http': 'socks5://127.0.0.1:9050',
         'https': 'socks5://127.0.0.1:9050'
     }
-    #try:
+    # try:
     for newest in range(0,100000,50):
-        URL = 'https://shopee.co.id/api/v4/search/search_items?by=relevancy&keyword='+str(keywoard)+'&limit=50&newest='+str(newest)+'&order=desc&page_type=search&version=2'
-        shopeeId = requests.get(URL, proxies=proxies)
+        try:
+            URL = 'https://shopee.co.id/api/v4/search/search_items?by=relevancy&keyword='+str(keywoard)+'&limit=50&newest='+str(newest)+'&order=desc&page_type=search&version=2'
+            shopeeId = requests.get(URL)
+        except:
+            print('Finished Scrap in This Category')
+            return False
+            
         #shopeeId = requests.get(URL)
         datas = shopeeId.json()
         arrs = datas['items']
         print(URL)
-        try:
-            for arr in arrs:
-                shopid = arr['shopid']
+        
+            
+        for arr in arrs:
+            shopid = arr['shopid']
 
-                print('Shopee Id : '+ str(shopid))
-                URLid = 'https://shopee.co.id/api/v4/product/get_shop_info?shopid='+str(shopid)
-                data = requests.get(URLid)
-                dataJson = data.json()
-                username = dataJson['data']['account']['username']
-                follower_count = dataJson['data']['follower_count']
-                print("Username "+username+" Following "+str(follower_count))
+            print('Shopee Id : '+ str(shopid))
+            URLid = 'https://shopee.co.id/api/v4/product/get_shop_info?shopid='+str(shopid)
+            data = requests.get(URLid)
+            dataJson = data.json()
+            username = dataJson['data']['account']['username']
+            follower_count = dataJson['data']['follower_count']
+            print("Username "+username+" Following "+str(follower_count))
                 
-                if follower_count < 200:
-                    writers = open('status/gmail.txt', 'a+', encoding="utf-8")
-                    writers.writelines(f"{shopid}|{username}|{follower_count}\n")
-                    writers.close()
-                    writers = open('status/yahoo.txt', 'a+', encoding="utf-8")
-                    writers.writelines(f"{shopid}|{username}|{follower_count}\n")
-                    writers.close()
-                    writers = open('status/results.txt', 'a+', encoding="utf-8")
-                    writers.writelines(f"{shopid}|{username}|{follower_count}\n")
-                    writers.close()
-                else:
-                    writers = open('status/user supplier.txt', 'a+', encoding="utf-8")
-                    writers.writelines(f"{shopid}|{username}|{follower_count}\n")
-                    writers.close()
-                    writers = open('status/results.txt', 'a+', encoding="utf-8")
-                    writers.writelines(f"{shopid}|{username}|{follower_count}\n")
-                    writers.close()
-        except:
-            print('Finished Scrap in This Category')
-            #subprocess.Popen(['tor_proxy/Tor/tor.exe'])
-            break
+            if follower_count < 200:
+                writers = open('status/gmail.txt', 'a+', encoding="utf-8")
+                writers.writelines(f"{shopid}|{username}|{follower_count}\n")
+                writers.close()
+                writers = open('status/yahoo.txt', 'a+', encoding="utf-8")
+                writers.writelines(f"{shopid}|{username}|{follower_count}\n")
+                writers.close()
+                writers = open('status/results.txt', 'a+', encoding="utf-8")
+                writers.writelines(f"{shopid}|{username}|{follower_count}\n")
+                writers.close()
+            else:
+                writers = open('status/user supplier.txt', 'a+', encoding="utf-8")
+                writers.writelines(f"{shopid}|{username}|{follower_count}\n")
+                writers.close()
+                writers = open('status/results.txt', 'a+', encoding="utf-8")
+                writers.writelines(f"{shopid}|{username}|{follower_count}\n")
+                writers.close()
+            
     #except:
     #    print("Cannot Activated Tor, Please Check IP socks5")
         
 def scrapByKeywoard():
-    subprocess.Popen(['tor_proxy/Tor/tor.exe'])
+    #subprocess.Popen(['tor_proxy/Tor/tor.exe'])
     sleep(3)
     urls = open(r"ShopeeKeywoard.txt", "r")
     keywoards = urls.readlines()
@@ -408,21 +412,36 @@ def productcek():
     else:
         print('Tidak Ada Opsi!!')
         
-def mail(user, i, length, driver):
+def mail(user, i, length, driver, drivers):
     driver.get('https://shopee.co.id/buyer/login/reset')
     driver.implicitly_wait(30)
     
     print("[ INFO ]__main__: In Progress "+ str(i) + "/" + str(length) )
     
-    email = driver.find_element_by_xpath('//*[@autocomplete="username"]')
-    email.send_keys(user)
-    email.send_keys(Keys.RETURN)
-    driver.implicitly_wait(30)
-    
+    try:
+        email = driver.find_element_by_xpath('//*[@autocomplete="username"]')
+        email.send_keys(user)
+        email.send_keys(Keys.RETURN)
+        driver.implicitly_wait(30)
+        driver.find_element_by_xpath('//*[@class="_2sB0oN"]')
+        driver.implicitly_wait(30)
+        try:
+            sleep(1)
+            imgCaptcha = driver.find_element_by_xpath('//*[@class="_25_r8I"]/img')
+            driver.execute_script("return arguments[0].scrollIntoView();", imgCaptcha)
+            sel = Selector(text=driver.page_source)
+            imagesCaptcha = sel.xpath('//*[@class="_25_r8I"]/img/@src').extract_first()
+            drivers.get(imagesCaptcha)
+        except:
+            print("[ ERRr ]__main__: captcha not found!! ")
+            return mail(user, i, length, driver)
+    except:
+        return mail(user, i, length, driver, drivers)    
+        
     captcha = driver.find_element_by_xpath('//*[@autocomplete="off"]')
     inputCaptcha = input("Masukkan Capthcha: ")
     if not inputCaptcha:
-        return mail(user, i, length, driver)
+        return mail(user, i, length, driver, drivers)
 
     captcha.send_keys(inputCaptcha)
     captcha.send_keys(Keys.RETURN)
@@ -433,15 +452,12 @@ def mail(user, i, length, driver):
         sel = Selector(text=driver.page_source)
         status = sel.xpath('//*[@class="M5j680"]/div/text()').extract_first()
         print(status)
-        print("[ INFO ]__main__: Success!!")
+        print("[ INFO ]__main__: Success")
         writers = open('status/userReady.txt', 'a+', encoding="utf-8")
         writers.writelines(f"{user}|Terdaftar\n")
         writers.close()
     except:
         print("[ INFO ]__main__: Invalid!!")
-        writers = open('status/userReady.txt', 'a+', encoding="utf-8")
-        writers.writelines(f"{user}|Tidak Terdaftar\n")
-        writers.close()
 
 def send_email():
     mobile_emulation = {
@@ -453,17 +469,19 @@ def send_email():
     chrome_options = Options()
 
     chrome_options.add_experimental_option("mobileEmulation", mobile_emulation)
-
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument('--log-level=3')
+    chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
     driver = webdriver.Chrome(chrome_options = chrome_options)
-    
-    user = open(r"username.txt", "r")
+    drivers = webdriver.Chrome()
+    user = open(r"status/product.txt", "r")
     reads = user.readlines()
     length = len(reads)
     
     for (read, i) in zip (reads, range(1, length)):
         akun = read.strip()
         user = akun.split("|")[0]
-        continued = mail(user, i, length, driver)
+        continued = mail(user, i, length, driver, drivers)
         if not continued:
             continue
             
@@ -593,6 +611,7 @@ def main():
         choice = str(input('Input Choice : '))
         if choice == '1':
             if __name__ == '__main__':
+                os.system('cls')
                 scrapByKeywoard()
         elif choice == '2':
             print("Bot Not Working")
@@ -601,18 +620,23 @@ def main():
             #    getstatus()
         elif choice == '3':
             if __name__ == '__main__':
+                os.system('cls')
                 gmailChecker()
         elif choice == '4':
             if __name__ == '__main__':
+                os.system('cls')
                 yahooChecker()
         elif choice == '5':
             if __name__ == '__main__':
+                os.system('cls')
                 productcek()
         elif choice == '6':
             if __name__ == '__main__':
+                os.system('cls')
                 send_email()
         elif choice == '7':
             if __name__ == '__main__':
+                os.system('cls')
                 libur_toko()
         else:
             print('Tidak Ada Opsi!!')

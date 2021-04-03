@@ -67,13 +67,13 @@ def get(user, i, length, nikname):
             return False
             
         try:
-            rangeMounth = random.randint(0, 11)
+            rangeMounth = random.randint(1, 12)
             driver.find_element_by_xpath('//*[@class="datepart0 form-control"]').click()
             sleep(0.5)
             driver.find_elements_by_xpath('//*[@class="datepart0 form-control"]/option')[rangeMounth].click()
             driver.implicitly_wait(10)
                 
-            rangeDate = random.randint(0, 29)
+            rangeDate = random.randint(1, 29)
             driver.find_element_by_xpath('//*[@class="datepart1 form-control"]').click()
             sleep(0.5)
             driver.find_elements_by_xpath('//*[@class="datepart1 form-control"]/option')[rangeDate].click()
@@ -191,7 +191,20 @@ def get(user, i, length, nikname):
 
                 print("[ INFO ]__main__: Setting Succes")
             except:
-                input("[ INPUT ]__main__: Setting Manual")
+                setting = driver.find_elements_by_xpath('//*[@class="_2-4jfRBkDLE1Xuu-op_VA2 o365sx-button"]')[2]
+                setting.click()
+                driver.implicitly_wait(10)
+                sleep(2)
+                
+                theme = random.randint(1, 9)
+                choseTema = driver.find_elements_by_xpath('//*[@class="_2NkmWEH68hmtsoAMpmU6Rk"]')[theme].click()
+                driver.implicitly_wait(10)
+                    
+                hide = driver.find_elements_by_xpath('//*[@class="ms-ChoiceField-wrapper"]')[5].click()
+                #driver.execute_script("return arguments[0].scrollIntoView();", hide)
+                driver.implicitly_wait(10)
+
+                print("[ INFO ]__main__: Setting Succes")
             
             for multiples in range(3,length,3):
                 if(i == multiples):
