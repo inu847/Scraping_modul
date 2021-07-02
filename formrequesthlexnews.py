@@ -1,4 +1,4 @@
-scrapy shell "https'://www1.hkexnews.hk/search/titlesearch.xhtml?lang=en"
+# scrapy shell "https'://www1.hkexnews.hk/search/titlesearch.xhtml?lang=en"
 
 from scrapy.http import FormRequest
 
@@ -18,12 +18,4 @@ data = {'lang': 'EN',
 page = FormRequest('https://www1.hkexnews.hk/search/titlesearch.xhtml?lang=en',
 					formdata=data)
 					
-fetch(page)
-
-
-#readme.md
-#shell first
-#import modul
-#%paste(data)
-#%paste(page)
-#fetch
+yield(page)

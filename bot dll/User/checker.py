@@ -601,6 +601,7 @@ def main():
         status = data['Status']
         
     user = open(r"data/config.json", "r")
+    print(user)
     dataJsons = json.load(user)
     emailConfig = dataJsons['lisensi']['email']
     passwordConfig = dataJsons['lisensi']['pwd']
