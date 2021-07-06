@@ -7,6 +7,7 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import WebDriverException
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.keys import Keys
+from oauth2client.service_account import ServiceAccountCredentials
 import requests
 from time import gmtime, strftime, sleep
 from random import randint
@@ -15,6 +16,8 @@ import pathlib
 import ctypes
 import os
 import datetime
+import gspread
+import json
 
 dateTimeObj = datetime.datetime.now()
 timestampStr = dateTimeObj.strftime("%H:%M:%S")
@@ -30,8 +33,7 @@ def main():
     response = 0
 
     # STARTUP EVENT
-
-    os.system('cls' if os.name == 'nt' else 'clear')
+    # os.system('cls' if os.name == 'nt' else 'clear')
 
     print("Flashsale Sniper [Platform : Shopee Edition Flash Sale]")
     producturl = input("Masukkan URL Product: ")
@@ -79,7 +81,10 @@ def main():
 
     option = webdriver.ChromeOptions()
     option.add_experimental_option("excludeSwitches", ['enable-automation']);
-    #option.add_argument("--headless")
+    option.add_argument('--disable-notifications')
+    # option.add_argument("--headless")
+    PATH = 'data/chromedriver.exe'
+    # browser = webdriver.Chrome(PATH, chrome_options=chrome_options)
     browser = webdriver.Chrome(options=option)
     browser.get("https://shopee.co.id/buyer/login")
     try:
@@ -189,20 +194,56 @@ def main():
             belisekarang = browser.find_element_by_xpath("/html/body/div[1]/div/div[2]/div[2]/div[2]/div[2]/div[3]/div/div[5]/div/div/button[2]")
             btnclass = belisekarang.get_attribute("class")
         else:
+            times_flashSale = flash_sale.split(":")
+            hI = int(times_flashSale[0])
+            mI = int(times_flashSale[1])
+            # WAIT STORE
+            while True:
+                x = datetime.datetime.now()
+                h = int(x.strftime("%H"))
+                m = int(x.strftime("%M"))
+                s = int(x.strftime("%S"))
+                rate_hourse = hI - h
+                rate_minuite = mI - m
+                rate_second = 0 - s
+                hourse_second = rate_hourse*3600
+                minute_second = rate_minuite*60
+                
+                limit = hourse_second + minute_second + rate_second
+                refresh = limit % 2
+                # sleep(0.1)
+                os.system('cls')
+                print("[",timestampStr,"]""[INFO :] "+str(limit)+ " second")
+                print()
+                if limit <= 0:
+                    print("finished!!")
+                    break
+                elif refresh == 0:
+                    browser.refresh()
+                    sleep(1)
+            
             if hasvariant == 1:
                 try:
+                    browser.implicitly_wait(10)
+                    productvariant = browser.find_elements_by_xpath("//*[@class='product-variation']")
                     productvariant[inputvariant].click()
+                    browser.implicitly_wait(10)
+                    belisekarang.click()
                 except:
                     while True:
                         print('[ ERROR ] Variasi Tidak tersedia')
+                        browser.implicitly_wait(10)
+                        productvariant = browser.find_elements_by_xpath("//*[@class='product-variation']")
                         inputvariant = int(input("Masukkan nomor variant product >"))
                         try:
                             productvariant[inputvariant].click()
                             break
                         except:
                             pass
-
-            belisekarang.click()
+                        finally:
+                            browser.implicitly_wait(10)
+                            belisekarang.click()
+            
             newtime()
             webhook = DiscordWebhook(url=logs, content='[INFO :] ORDER BUTTON ENABLED, ATTEMPTING TO PUT ITEM IN CART...')
             if pakelog == "y":
@@ -211,23 +252,6 @@ def main():
             break
         
     checkout(browser, pembayaran, logs, pakelog, flash_sale)
-    # try:
-    # except:
-    #     while True:
-    #         try:
-    #             print("Mohon masukkan metode pembayaran yang ingin dipakai")
-    #             print("[1] : ShopeePay (Pastikan Saldo Cukup)")
-    #             print("[2] : Bank BCA (Cek Otomatis)")
-    #             print("[3] : Bank Mandiri (Cek Otomatis)")
-    #             print("[4] : Bank BNI (Cek Otomatis)")
-    #             print("[5] : Bank BRI (Cek Otomatis)")
-    #             print("[6] : Bank Syariah Mandiri (Cek Otomatis)")
-    #             print("[7] : Bank Permata (Dicek Otomatis)")
-    #             pembayaran = int(input("Pilihan ulang metode pembayaran (1-6) > "))
-    #             checkout(browser, pembayaran, logs, pakelog)
-    #             break
-    #         except:
-    #             pass
 
 def checkout(browser, pembayaran, logs, pakelog, flash_sale):
     newtime()
@@ -277,7 +301,11 @@ def checkout(browser, pembayaran, logs, pakelog, flash_sale):
             browser.execute_script("arguments[0].click();", shopeepay)
         except:
             print('Saldo Anda Tidak Mencukupi!!\n')
-        
+
+        browser.implicitly_wait(20)
+        browser.find_element_by_xpath('//*[@id="pay-button"]').click()
+        # //*[@class="digit-holder"]
+
     # Bank BCA (Cek Otomatis)
     elif pembayaran == 2:
         browser.execute_script("arguments[0].click();", bankmethod)
@@ -396,30 +424,6 @@ def checkout(browser, pembayaran, logs, pakelog, flash_sale):
         print("Invalid payment method specified!, please try again later.")
         print("Sniping failed!")
 
-    times_flashSale = flash_sale.split(":")
-    hI = int(times_flashSale[0])
-    mI = int(times_flashSale[1])
-    # WAIT STORE
-    while True:
-        x = datetime.datetime.now()
-        h = int(x.strftime("%H"))
-        m = int(x.strftime("%M"))
-        s = int(x.strftime("%S"))
-        rate_hourse = hI - h
-        rate_minuite = mI - m
-        rate_second = 0 - s
-        hourse_second = rate_hourse*3600
-        minute_second = rate_minuite*60
-        
-        limit = hourse_second + minute_second + rate_second
-        sleep(0.1)
-        os.system('cls')
-        print("[",timestampStr,"]""[INFO :] "+str(limit)+ " second")
-        print()
-        if limit <= 0:
-            print("finished!!")
-            break
-
     # BUAT ORDER
     try:
         element = WebDriverWait(browser, 10).until(
@@ -458,4 +462,31 @@ def checkout(browser, pembayaran, logs, pakelog, flash_sale):
     sleep(10)
     
 if __name__ == '__main__':
-    main()
+    #try:
+    scope = ["https://spreadsheets.google.com/feeds",'https://www.googleapis.com/auth/spreadsheets',"https://www.googleapis.com/auth/drive.file","https://www.googleapis.com/auth/drive"]
+    creds = ServiceAccountCredentials.from_json_keyfile_name("data/config-cd7413190612.json", scope)
+    client = gspread.authorize(creds)
+    sheet = client.open("config").sheet1
+    datas = sheet.get_all_records()
+            
+    user = open(r"data/config.json", "r")
+    dataJsons = json.load(user)
+    emailConfig = dataJsons['lisensi']['email']
+    passwordConfig = dataJsons['lisensi']['pwd']
+    userAgentConfig = dataJsons['lisensi']['user-agent']
+            
+    for data in datas:
+        email = data['Email']
+        password = data['Password']
+        userAgent = data['User Agent']
+        status = data['Status']
+                
+        if email == emailConfig and password == passwordConfig and userAgent == userAgentConfig and status == 'Active':
+            print('Login config success!!')
+            main()
+        elif email == emailConfig and password == passwordConfig and userAgent == userAgentConfig and status != 'Active':
+            print('Login Failed!! Your Config non-active')
+            sleep(3)
+    #except:
+        #print('Login Failed!! error connection!!')
+        #sleep(3)
